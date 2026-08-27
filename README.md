@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bizfit Funnel Map (V1 Web App)
 
-## Getting Started
+> **메인 문구**: 내 경험을, 고객이 결제하는 사업 구조로 정리합니다.  
+> **보조 문구**: 감으로 하던 사업을 구조로 정리합니다.
 
-First, run the development server:
+Bizfit Funnel Map은 "돈을 벌고 싶지만 무엇을, 누구에게, 어떻게 팔아야 할지 모르겠다"는 예비 1인사업자, 프리랜서, 초기 창업자가 자신의 경험과 조건(시간, 예산, 노출 여부 등)을 입력하면 실행 가능한 **수익모델 가설**과 **첫 고객 확보 퍼널 구조**를 설계해주는 AI 서비스 웹앱입니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🎯 주요 기능 및 화면 흐름 (5 Steps)
+
+1. **Step 1 — 사업 상황 입력**
+   - 필수: 경력/직업, 잘하는 일/보유 기술, 우선 목표(첫 유료 고객 / 월 부수입 / 기존 고객 증가 / 반복 업무 감소)
+   - 선택: 현재 고객 접점(블로그, 인스타, 당근, 카카오 등), 주당 투입 시간, 초기 예산, 얼굴 노출 여부, 보유 자료, 피하고 싶은 방식
+   - *개인정보, 사업자번호, 계좌 정보는 수집하지 않습니다.*
+
+2. **Step 2 — 수익모델 후보 비교 (8~10개 아이템 & 포지셔닝 맵)**
+   - 8~10개 맞춤 수익모델 카드 제안 (대상 고객, 해결 문제, 추천 형태, 선택 이유, 필요 준비물, 준비 기간, 1~5점 점수 평가, 전제/위험)
+   - **인터랙티브 SVG 포지셔닝 맵**:
+     - **X축**: 실행 난이도 (1: 쉬움 ~ 5: 어려움)
+     - **Y축**: 첫 고객 검증 용이성 (1: 어려움 ~ 5: 쉬움)
+     - **점 크기**: 초기비용 부담이 낮을수록 크게 표시
+   - 조건 재생성 필터 (예: "예산 30만원 이하로", "강의는 제외", "얼굴 노출 없이" 등)
+
+3. **Step 3 — 첫 고객 확보 방식 선택 (5가지 퍼널)**
+   - 검증형 / 리드 수집형 / 워크숍형 / 지역·단골형 / 디지털 상품형
+   - AI 추천 배지 및 방식별 준비사항/주의사항 제공
+
+4. **Step 4 — 실행 구조 결과**
+   - **A. 한 줄 사업 가설**: 대상 고객 / 해결 문제 / 제안 상품 / 변화 가치 한 줄 요약 hero 카드
+   - **B. 가장 작은 검증 계획**: 이번 주 실행 3개, 접점 채널 1~2개, 검증 질문 3개, 통과 기준
+   - **C. 고객 유입과 판매 흐름**: 3~5단계 퍼널 (참고 가격 범위 및 "가격 검증 필요" 명시, CTA, 운영 방식)
+   - **D. 14일 실행 계획**: 시간/예산 범위 내 14일 일정별 행동 및 완료 기준
+
+5. **Step 5 — 상세 실행 자료 (5개 탭)**
+   - 탭 1: 첫 접점 자료 (제목 3안, 구성 4단계, CTA)
+   - 탭 2: 첫 유료 상품 (범위, 제공물, 제외 범위, 가격 검증 질문)
+   - 탭 3: 랜딩페이지 초안 (문제 -> 대상 -> 해결책 -> 제공물 -> 절차 -> CTA)
+   - 탭 4: 유입 콘텐츠 주제 10선 (사용자 채널 맞춤)
+   - 탭 5: Bizfit 상담 전환 질문 5개
+   - **보고서 기능**: 전체 보고서 Markdown 복사, `.md` 파일 다운로드, 브라우저 LocalStorage 저장/복원
+
+---
+
+## 🔒 AI 안전 및 지침 준수
+
+- 본 서비스 결과는 확정된 수익이 아닌 **"실행 가설"** 및 **"확인이 필요한 전제"**로 제시됩니다.
+- "월 N만원 가능", "자동 수익", "100% 성공" 같은 미검증 과장 광고 표현을 절대 사용하지 않습니다.
+- 모든 화면 및 내보내기 결과에 아래 안심 문구가 명시됩니다:  
+  `"이 결과는 실행 가설입니다. 실제 수요, 가격, 법적·정책적 조건은 고객 반응과 최신 기준을 별도로 확인하세요."`
+
+---
+
+## 🛠️ 기술 스택 및 환경 설정
+
+- **Framework**: Next.js 14/15 (App Router, TypeScript)
+- **Styling**: Tailwind CSS v4, Lucide React Icons
+- **AI Integration**: Google Gemini API (Server-side Route Handlers)
+
+### 필수 환경 변수 (`.env.local`)
+
+프로젝트 루트에 `.env.local` 파일을 생성하여 다음과 같이 설정할 수 있습니다.
+
+```env
+# Google Gemini API Key (서버측 환경변수로 관리되며 프론트엔드에 노출되지 않음)
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> [!NOTE]
+> `GEMINI_API_KEY`가 설정되어 있지 않거나 호출에 실패한 경우, 애플리케이션은 자동으로 **풍부한 풍선형 데모 모드(Demo Mode)**로 전환되어 전체 화면 흐름을 완벽하게 시연할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 실행 방법
 
-## Learn More
+### 1. 패키지 설치
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. 개발 서버 실행
+```bash
+npm run dev
+```
+브라우저에서 `http://localhost:3000` 접속
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. 프로덕션 빌드 및 실행
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🧪 테스트 방법
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Step 1 입력 검증 테스트**:
+   - 필수 항목(경력, 보유기술) 미입력 시 에러 메시지 노출 확인
+   - 필수 항목 작성 후 "수익모델 후보 비교하기" 클릭 시 Step 2로 정상 이동
+2. **Step 2 포지셔닝 맵 및 재생성 테스트**:
+   - 8~10개 카드가 정상 렌더링되는지 확인
+   - 포지셔닝 맵의 점을 마우스 오버/클릭하여 해당 카드 선택 작동 확인
+   - "얼굴 노출 없이", "강의는 제외" 등 조건 칩 클릭 시 재생성 동작 확인
+3. **Step 3 퍼널 선택 테스트**:
+   - 5개 퍼널 옵션 클릭 및 AI 추천 배지 확인
+4. **Step 4 & Step 5 실행 결과 테스트**:
+   - 한 줄 사업 가설, 14일 계획, 5개 탭 내용이 정상 출력되는지 확인
+   - "전체 결과 복사하기" 및 ".MD 다운로드" 버튼 동작 테스트
+   - 페이지 새로고침 시 LocalStorage에서 이전 입력 데이터 복원 여부 확인
+5. **모바일 반응형 테스트**:
+   - 360px 이상 해상도(모바일, 태블릿, 데스크톱)에서 가독성 및 UI 레이아웃 점검
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚫 V1 제외 범위 (Scope Exclusions)
+
+- 사용자 로그인 / 회원가입 / 회원 데이터베이스 저장 (대신 브라우저 `localStorage` 사용)
+- PG 결제 연동 / 실제 상담 예약 시스템 / 자동 메시지/메일 발송 기능
+- 주식, 투자, 대출, 가상자산 관련 조언
+- 의료, 법률, 세무 전문 판단
+- 정부지원사업 선정 가능성 판단 및 수익 보장 문구
+- 허위 후기, 가짜 고객 사례 생성

@@ -284,6 +284,8 @@ export function generateDemoBlueprint(
   model: RevenueModel,
   funnelType: FunnelType
 ): ExecutionBlueprint {
+  const careerSnippet = situation.career || '실무 경험';
+  const skillSnippet = situation.skills || '보유 전문 지식';
   const target = model.targetCustomer;
   const problem = model.problemSolved;
   const offer = model.name;
