@@ -14,35 +14,37 @@ export function generateMarkdownReport(
   return `
 # 📌 Bizfit Funnel Map 실행 보고서
 
-> **안내 문구**: 이 결과는 실행 가설입니다. 실제 수요, 가격, 법적·정책적 조건은 고객 반응과 최신 기준을 별도로 확인하세요.
+> **안안심 안내**: 이 결과는 실행 가설입니다. 실제 수요, 가격, 법적·정책적 조건은 고객 반응과 최신 기준을 별도로 확인하세요.
 
 ---
 
-## 1. 사업 상황 (입력 조건)
-- **경력/직업**: ${situation.career}
-- **보유 기술/장점**: ${situation.skills}
+## 1. 공급자(나)의 경력 및 실행 조건
+- **공급자 경력**: ${situation.career}
+- **보유 기술**: ${situation.skills}
 - **우선 목표**: ${situation.primaryGoal}
-- **주당 활용 시간**: ${situation.availableHours || '자율'}시간
+- **주당 투입 시간**: ${situation.availableHours || '자율'}시간
 - **초기 예산**: ${situation.budget || '최소 예산'}
 - **현재 접점 채널**: ${situation.channels || '없음/신규'}
 
 ---
 
-## 2. 선택 수익모델
+## 2. 선택 수익모델 (공급자 ➔ 결제 고객 구조)
 - **아이템명**: ${model.name}
-- **대상 고객**: ${model.targetCustomer}
-- **해결 문제**: ${model.problemSolved}
+- **공급자 역량**: ${model.providerProfile?.careerSummary || situation.career}
+- **🎯 실제 결제 고객**: ${model.targetCustomer}
+- **💡 고객의 통증/문제**: ${model.customerProblem || model.problemSolved}
 - **추천 형태**: ${model.recommendedFormat}
-- **선택 이유**: ${model.matchReason}
-- **확인 필요 위험/전제**: ${model.riskOrAssumption}
+- **경력 연결 이유**: ${model.matchReason}
+- **확인 필요 전제**: ${model.riskOrAssumption}
 
 ---
 
 ## 3. 한 줄 사업 가설
 > "${h.oneLiner}"
 
-- **대상 고객**: ${h.targetCustomer}
-- **해결 문제**: ${h.problemSolved}
+- **공급자 역량**: ${h.providerRole || situation.career}
+- **결제 고객**: ${h.targetCustomer}
+- **고객 통증**: ${h.customerProblem || model.customerProblem}
 - **제안 상품**: ${h.proposedOffer}
 - **고객 변화**: ${h.transformation}
 

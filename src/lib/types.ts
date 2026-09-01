@@ -8,15 +8,15 @@ export type FaceExposureType = 'allowed' | 'not_allowed' | 'flexible';
 
 export interface UserSituation {
   // Mandatory
-  career: string;              // 경력/직업/해본 일
-  skills: string;              // 잘하는 일/보유기술/부탁받는 일
+  career: string;              // 공급자(입력자)의 경력/직업/실무 경험
+  skills: string;              // 공급자의 보유 기술/잘하는 일/부탁받는 일
   primaryGoal: GoalType;       // 우선 목표
 
   // Optional
   channels?: string;           // 현재 고객 접점
   availableHours?: number;     // 주당 가능 시간 (시간)
   budget?: string;             // 초기 예산
-  faceExposure?: FaceExposureType; // 얼굴 노출
+  faceExposure?: FaceExposureType; // 얼굴 노출 여부
   existingContent?: string;    // 보유 자료/포트폴리오
   dislikedConditions?: string; // 피하고 싶은 방식/조건
 }
@@ -28,13 +28,20 @@ export interface RevenueModelScore {
   operationBurden: number;   // 반복 운영 부담 (1=낮음 ~ 5=높음)
 }
 
+export interface ProviderProfile {
+  careerSummary: string;     // 공급자의 실무 역량/경력 요약
+  coreSkills: string[];      // 공급자가 보유한 핵심 기술
+}
+
 export interface RevenueModel {
   id: string;
-  name: string;                // 상품/서비스 이름
-  targetCustomer: string;       // 대상 고객
-  problemSolved: string;        // 해결 문제
-  recommendedFormat: string;   // 추천 형태 (진단, 1:1 서비스, 템플릿, 워크숍 등)
-  matchReason: string;         // 이 사용자에게 맞는 이유
+  name: string;                // 상품 또는 서비스 이름
+  providerProfile: ProviderProfile; // 공급자 역량 (입력자의 전문성)
+  targetCustomer: string;       // 실제 결제 고객 (공급자와 분리된 구매 주체)
+  customerProblem: string;      // 고객이 느끼는 구체적 통증 및 문제
+  problemSolved?: string;       // 하위 호환용 고객 문제
+  recommendedFormat: string;   // 추천 형태 (1:1 진단, 케어 클래스, 세팅 대행, 템플릿 등)
+  matchReason: string;         // 이 사용자의 경력/기술이 이 서비스에 적합한 이유
   preparationItems: string[];  // 필요한 준비물
   prepDuration: string;        // 준비 기간
   scores: RevenueModelScore;   // 1~5점 평가
@@ -81,11 +88,12 @@ export interface FourteenDayAction {
 export interface ExecutionBlueprint {
   // A. 한 줄 사업 가설
   hypothesis: {
-    targetCustomer: string;
-    problemSolved: string;
-    proposedOffer: string;
-    transformation: string;
-    oneLiner: string;
+    providerRole: string;        // 공급자의 역할/전문성
+    targetCustomer: string;      // 결제 고객
+    customerProblem: string;     // 해결하려는 문제
+    proposedOffer: string;       // 제안 상품/서비스
+    transformation: string;      // 고객이 얻는 실질적 변화
+    oneLiner: string;            // 자연스러운 한 줄 사업 가설 문장
   };
 
   // B. 가장 작은 검증 계획

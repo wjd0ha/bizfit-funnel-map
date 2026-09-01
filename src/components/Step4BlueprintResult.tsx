@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExecutionBlueprint, RevenueModel, UserSituation } from '@/lib/types';
-import { Sparkles, ArrowRight, CheckSquare, Target, HelpCircle, Layers, Calendar, Copy, Check } from 'lucide-react';
+import { Sparkles, ArrowRight, CheckSquare, Target, HelpCircle, Layers, Calendar, Copy, Check, UserCheck } from 'lucide-react';
 import { copyToClipboard } from '@/lib/exportUtils';
 import { SafetyDisclaimer } from './SafetyDisclaimer';
 
@@ -23,7 +23,7 @@ export const Step4BlueprintResult: React.FC<Step4BlueprintResultProps> = ({
   const [completedWeeklyActions, setCompletedWeeklyActions] = useState<number[]>([]);
 
   const handleCopyHypothesis = async () => {
-    const text = `[Bizfit 한 줄 사업 가설]\n"${blueprint.hypothesis.oneLiner}"\n\n- 대상 고객: ${blueprint.hypothesis.targetCustomer}\n- 해결 문제: ${blueprint.hypothesis.problemSolved}\n- 제안 상품: ${blueprint.hypothesis.proposedOffer}\n- 고객 변화: ${blueprint.hypothesis.transformation}\n\n* 본 결과는 실행 가설입니다. 실제 수요, 가격은 별도로 검증하세요.`;
+    const text = `[Bizfit 한 줄 사업 가설]\n"${blueprint.hypothesis.oneLiner}"\n\n- 공급자 역량: ${blueprint.hypothesis.providerRole || situation.career}\n- 결제 고객: ${blueprint.hypothesis.targetCustomer}\n- 고객의 통증: ${blueprint.hypothesis.customerProblem || model.customerProblem}\n- 제안 상품: ${blueprint.hypothesis.proposedOffer}\n- 고객 변화: ${blueprint.hypothesis.transformation}\n\n* 본 결과는 실행 가설입니다. 실제 수요 및 가격은 고객 반응을 통해 별도로 검증하세요.`;
     const success = await copyToClipboard(text);
     if (success) {
       setCopied(true);
@@ -49,7 +49,7 @@ export const Step4BlueprintResult: React.FC<Step4BlueprintResultProps> = ({
           Bizfit Funnel Map 실행 로드맵
         </h1>
         <p className="text-slate-600 text-sm max-w-xl mx-auto leading-relaxed">
-          감으로 하던 사업 아이디어를 측정 가능한 검증 가설과 14일 실행 단계로 구조화했습니다.
+          공급자 경력과 결제 고객을 명확히 구분한 실행 가설과 14일 검증 단계입니다.
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export const Step4BlueprintResult: React.FC<Step4BlueprintResultProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
-            <h2 className="font-extrabold text-lg text-white">A. 한 줄 사업 가설</h2>
+            <h2 className="font-extrabold text-lg text-white">A. 한 줄 사업 가설 (Hypothesis)</h2>
           </div>
           <button
             type="button"
@@ -81,22 +81,41 @@ export const Step4BlueprintResult: React.FC<Step4BlueprintResultProps> = ({
           </p>
         </div>
 
-        {/* 4 Components Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        {/* 5 Structural Components Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
           <div className="bg-slate-800/70 p-3.5 rounded-xl border border-slate-700/60">
-            <span className="text-slate-400 block font-semibold mb-1">🎯 대상 고객</span>
+            <span className="text-slate-400 block font-semibold mb-1 flex items-center gap-1">
+              <UserCheck className="w-3.5 h-3.5 text-slate-300" />
+              공급자 역량
+            </span>
+            <span className="text-slate-200 font-medium">{blueprint.hypothesis.providerRole || situation.career}</span>
+          </div>
+
+          <div className="bg-slate-800/70 p-3.5 rounded-xl border border-slate-700/60">
+            <span className="text-blue-400 block font-semibold mb-1 flex items-center gap-1">
+              🎯 결제 고객
+            </span>
             <span className="text-slate-200 font-medium">{blueprint.hypothesis.targetCustomer}</span>
           </div>
+
           <div className="bg-slate-800/70 p-3.5 rounded-xl border border-slate-700/60">
-            <span className="text-slate-400 block font-semibold mb-1">💡 해결 문제</span>
-            <span className="text-slate-200 font-medium">{blueprint.hypothesis.problemSolved}</span>
+            <span className="text-slate-400 block font-semibold mb-1 flex items-center gap-1">
+              💡 고객 통증
+            </span>
+            <span className="text-slate-200 font-medium">{blueprint.hypothesis.customerProblem || model.customerProblem}</span>
           </div>
+
           <div className="bg-slate-800/70 p-3.5 rounded-xl border border-slate-700/60">
-            <span className="text-slate-400 block font-semibold mb-1">📦 제안 상품</span>
+            <span className="text-slate-400 block font-semibold mb-1 flex items-center gap-1">
+              📦 제안 상품
+            </span>
             <span className="text-slate-200 font-medium">{blueprint.hypothesis.proposedOffer}</span>
           </div>
+
           <div className="bg-slate-800/70 p-3.5 rounded-xl border border-slate-700/60">
-            <span className="text-slate-400 block font-semibold mb-1">✨ 고객의 변화</span>
+            <span className="text-slate-400 block font-semibold mb-1 flex items-center gap-1">
+              ✨ 고객의 변화
+            </span>
             <span className="text-slate-200 font-medium">{blueprint.hypothesis.transformation}</span>
           </div>
         </div>
@@ -166,7 +185,7 @@ export const Step4BlueprintResult: React.FC<Step4BlueprintResultProps> = ({
               <span className="font-bold text-slate-900 block">📢 접점 채널:</span>
               <p className="text-slate-600">{blueprint.smallestValidation.channels.join(' / ')}</p>
 
-              <span className="font-bold text-slate-900 block pt-1">🎯 수정 가능한 통과 기준:</span>
+              <span className="font-bold text-slate-900 block pt-1">🎯 통과 기준 (가설 검증):</span>
               <p className="text-blue-700 font-semibold">{blueprint.smallestValidation.passCriteria}</p>
             </div>
           </div>

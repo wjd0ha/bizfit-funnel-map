@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserSituation, GoalType, FaceExposureType } from '@/lib/types';
-import { Sparkles, HelpCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Sparkles, HelpCircle, ArrowRight, CheckCircle2, UserCheck } from 'lucide-react';
 import { SafetyDisclaimer } from './SafetyDisclaimer';
 
 interface Step1InputFormProps {
@@ -42,7 +42,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
   const validate = () => {
     const errs: { [key: string]: string } = {};
     if (!career.trim()) {
-      errs.career = '실제 경험하신 직무나 경험을 1문장 이상 입력해 주세요.';
+      errs.career = '실제 경험하신 직무나 경력을 1문장 이상 입력해 주세요.';
     }
     if (!skills.trim()) {
       errs.skills = '잘하는 일이나 주변에서 자주 요청받는 지식을 입력해 주세요.';
@@ -68,6 +68,38 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
     });
   };
 
+  // Quick Preset Test Cases
+  const handleApplyPreset = (type: 'groomer' | 'ecom' | 'notion') => {
+    if (type === 'groomer') {
+      setCareer('7년 차 반려견 미용사 / 오프라인 매장 운영');
+      setSkills('소형견 미용, 위생 가이드, 모질 피부 상태 파악, 보호자 상담');
+      setPrimaryGoal('first_paying_customer');
+      setChannels('인스타그램, 당근 동네생활');
+      setAvailableHours(6);
+      setBudget('10만원 이하');
+      setFaceExposure('allowed');
+      setDislikedConditions('전화상담 제외');
+    } else if (type === 'ecom') {
+      setCareer('5년 차 온라인 쇼핑몰 운영자');
+      setSkills('상품 등록, CS 응대 답변 세팅, 발주 수량 모니터링, 실수 방지 프로세스');
+      setPrimaryGoal('monthly_side_income');
+      setChannels('네이버 블로그, 카카오톡 오픈채팅');
+      setAvailableHours(8);
+      setBudget('30만원 이하');
+      setFaceExposure('flexible');
+      setDislikedConditions('강의 제외');
+    } else if (type === 'notion') {
+      setCareer('사무직 직장인 및 노션/엑셀 정리 실무자');
+      setSkills('노션 수식 정리, 프로젝트 대시보드 제작, 엑셀 손익 계산 양식');
+      setPrimaryGoal('reduce_repetitive_work');
+      setChannels('네이버 블로그');
+      setAvailableHours(5);
+      setBudget('0원 (무자본 검증)');
+      setFaceExposure('not_allowed');
+      setDislikedConditions('오프라인 미팅 제외');
+    }
+  };
+
   // Channel Quick Tags
   const quickChannels = ['네이버 블로그', '인스타그램', '당근 동네생활', '카카오톡 채널', '유튜브', '오프라인 단골/인맥'];
   const handleToggleChannelTag = (tag: string) => {
@@ -90,15 +122,51 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Step 1 — 사업 상황 입력</span>
+          <span>Step 1 — 사업 상황 및 실무 경력 입력</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          당신의 경험과 조건을 알려주세요
+          당신의 경험과 전문성을 알려주세요
         </h1>
         <p className="text-slate-600 text-sm max-w-xl mx-auto leading-relaxed">
-          거창한 사업계획서나 큰 자본 없이도 시작할 수 있습니다.<br className="hidden sm:inline" />
-          현재 가지고 계신 실무 경험, 시간, 예산 안에서 검증 가능한 사업 가설을 만듭니다.
+          거창한 자본이나 과장 광고 없이, 현재 보유하신 실무 경력에서 출발합니다.<br className="hidden sm:inline" />
+          입력하신 전문성은 공급자(나)의 가치로 정의되고, 실제 결제할 고객은 AI가 다음 단계에서 명확히 분리하여 설계합니다.
         </p>
+      </div>
+
+      {/* Quick Test Presets Bar */}
+      <div className="bg-blue-900 text-white rounded-2xl p-4 sm:p-5 border border-blue-800 space-y-3 shadow-sm">
+        <div className="flex items-center gap-2">
+          <UserCheck className="w-4 h-4 text-blue-300" />
+          <span className="text-xs font-bold text-blue-200">
+            💡 검증된 빠른 예시로 테스트해보기 (클릭 시 자동 입력)
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+          <button
+            type="button"
+            onClick={() => handleApplyPreset('groomer')}
+            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700 transition-all font-medium flex items-center gap-1.5"
+          >
+            <span>🐕</span>
+            <span>7년 차 반려견 미용사</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleApplyPreset('ecom')}
+            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700 transition-all font-medium flex items-center gap-1.5"
+          >
+            <span>🛍️</span>
+            <span>5년 차 쇼핑몰 운영자</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleApplyPreset('notion')}
+            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-left border border-slate-700 transition-all font-medium flex items-center gap-1.5"
+          >
+            <span>📊</span>
+            <span>노션·엑셀 정리 실무자</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Form */}
@@ -107,7 +175,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
           <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-              필수 입력 사항
+              공급자(나)의 경력 및 역량 입력
             </h2>
             <span className="text-xs text-red-500 font-medium">* 필수</span>
           </div>
@@ -118,13 +186,13 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
               1. 경력 · 직업 또는 실제 해본 일 <span className="text-red-500">*</span>
             </label>
             <p className="text-xs text-slate-500">
-              예시: 3년 차 마케터, 카페 운영 경험, 엑셀/노션 정리 실무, 아동 미술 지도, 부동산 중개 보조 등
+              예시: 7년 차 반려견 미용사, 5년 차 쇼핑몰 운영자, 카페 운영 경험, 엑셀/노션 정리 실무
             </p>
             <input
               type="text"
               value={career}
               onChange={(e) => setCareer(e.target.value)}
-              placeholder="예: 5년 차 온라인 쇼핑몰 상세페이지 제작 및 운영 담당자"
+              placeholder="예: 7년 차 반려견 미용사 및 매장 운영 경험"
               className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all ${
                 errors.career
                   ? 'border-red-400 focus:ring-red-400 bg-red-50/20'
@@ -142,13 +210,13 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
               2. 잘하는 일 · 보유 기술 · 반복해서 부탁받는 일 <span className="text-red-500">*</span>
             </label>
             <p className="text-xs text-slate-500">
-              예시: 카드뉴스 제작, 엑셀 수식 및 대시보드, 글쓰기 피드백, 블로그 세팅, 단골 고객 상담
+              예시: 소형견 위생케어 가이드, 상세페이지 상품 등록, CS 응대 답변 세팅, 엑셀 수식 대시보드
             </p>
             <textarea
               rows={3}
               value={skills}
               onChange={(e) => setSkills(e.target.value)}
-              placeholder="예: 노션으로 업무 체크리스트 만들기, 캔바로 깔끔한 포스터 제작, 초보자용 블로그 글쓰기 지도"
+              placeholder="예: 반려견 발톱 정리 및 피부 상태 파악, 초보 보호자 질문 응대"
               className={`w-full px-4 py-3 rounded-xl border text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all ${
                 errors.skills
                   ? 'border-red-400 focus:ring-red-400 bg-red-50/20'
@@ -170,12 +238,12 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
                 {
                   id: 'first_paying_customer',
                   label: '첫 유료 고객 검증',
-                  desc: '가장 빠르게 1명의 첫 구매 고객 만들기',
+                  desc: '가장 빠르게 1명의 첫 결제 고객 만들기',
                 },
                 {
                   id: 'monthly_side_income',
                   label: '월 부수입 창출',
-                  desc: '주당 소수 시간 투자로 추가 수익 올리기',
+                  desc: '소수 시간 투자로 추가 수익 올리기',
                 },
                 {
                   id: 'increase_customers',
@@ -185,7 +253,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
                 {
                   id: 'reduce_repetitive_work',
                   label: '반복 업무 감소 & 디지털 자산화',
-                  desc: '시간을 직접 안 써도 되는 템플릿/자료 판매',
+                  desc: '시간 투입을 줄이는 템플릿/가이드 구조',
                 },
               ].map((item) => {
                 const isSelected = primaryGoal === item.id;
@@ -223,7 +291,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
           <div className="pb-3 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-              선택 입력 사항 (더 정밀한 퍼널 설계를 위한 조건)
+              선택 입력 사항 (적합성 검수를 위한 실행 조건)
             </h2>
             <span className="text-xs text-slate-500">선택</span>
           </div>
@@ -256,7 +324,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
               type="text"
               value={channels}
               onChange={(e) => setChannels(e.target.value)}
-              placeholder="예: 네이버 블로그 (이웃 300명), 인스타그램, 당근마켓"
+              placeholder="예: 네이버 블로그 (이웃 300명), 인스타그램, 당근 동네생활"
               className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -293,7 +361,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="0원 (무자본 검증)">0원 (무자본 검증)</option>
-                <option value="10만원 이하">10만원 이하 (가벼운 툴/소액 소모비)</option>
+                <option value="10만원 이하">10만원 이하 (소액 소모비)</option>
                 <option value="30만원 이하">30만원 이하 (샘플 제작 및 홍보)</option>
                 <option value="50만원 이상">50만원 이상</option>
               </select>
@@ -331,13 +399,13 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-slate-800">
-                보유 중인 자료 · 콘텐츠
+                보유 중인 자료 · 파일 (노션/엑셀/포트폴리오 등)
               </label>
               <input
                 type="text"
                 value={existingContent}
                 onChange={(e) => setExistingContent(e.target.value)}
-                placeholder="예: 정리해둔 엑셀 서식, 업무 매뉴얼 파일"
+                placeholder="예: 미용 위생 가이드 서식, 엑셀 장부 양식"
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -361,7 +429,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
         <div className="flex items-center gap-2 text-xs text-slate-500 px-1">
           <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
           <span>
-            Bizfit은 개인정보, 사업자번호, 계좌 정보를 수집하지 않습니다. 입력한 내용은 가설 분석에만 사용됩니다.
+            Bizfit은 개인정보, 사업자번호, 계좌 정보를 수집하지 않습니다. 입력한 정보는 가설 분석에만 사용됩니다.
           </span>
         </div>
 
@@ -378,7 +446,7 @@ export const Step1InputForm: React.FC<Step1InputFormProps> = ({
             {isLoading ? (
               <span className="flex items-center gap-2">
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                <span>수익모델 8~10개 후보 분석 중...</span>
+                <span>수익모델 적합성 검수 및 후보 분석 중...</span>
               </span>
             ) : (
               <>

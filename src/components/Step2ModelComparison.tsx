@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RevenueModel } from '@/lib/types';
 import { PositioningMap } from './PositioningMap';
-import { Sparkles, ArrowRight, RefreshCw, Check, AlertCircle, Clock, Package } from 'lucide-react';
+import { Sparkles, ArrowRight, RefreshCw, Check, AlertCircle, Clock, Package, User, Target } from 'lucide-react';
 import { SafetyDisclaimer } from './SafetyDisclaimer';
 
 interface Step2ModelComparisonProps {
@@ -48,11 +48,11 @@ export const Step2ModelComparison: React.FC<Step2ModelComparisonProps> = ({
           <span>Step 2 — 수익모델 후보 비교 ({models.length}개 분석)</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          당신의 조건에 맞는 사업 아이템 후보
+          공급자 경력 ➔ 실제 결제 고객 연결 구조
         </h1>
         <p className="text-slate-600 text-sm max-w-2xl mx-auto leading-relaxed">
-          입력하신 경력과 지식을 바탕으로 준비 기간이 짧고 빠른 검증이 가능한 아이템 8~10개를 추출했습니다.<br className="hidden sm:inline" />
-          포지셔닝 맵과 점수를 비교해 가장 끌리는 1개 아이템을 선택해 주세요.
+          입력하신 경력은 공급자(나)의 전문 가치로 정의되었으며, 실제 돈을 내는 구매 고객을 명확히 분리하여 설계했습니다.<br className="hidden sm:inline" />
+          포지셔닝 맵과 점수를 비교하여 실행하고 싶은 아이템 1개를 선택해 주세요.
         </p>
       </div>
 
@@ -116,11 +116,11 @@ export const Step2ModelComparison: React.FC<Step2ModelComparisonProps> = ({
         </div>
       </div>
 
-      {/* Models Grid (8-10 Cards) */}
+      {/* Models Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">
-            수익모델 목록 <span className="text-sm font-normal text-slate-500">({models.length}개 아이템)</span>
+            수익모델 목록 <span className="text-sm font-normal text-slate-500">({models.length}개 분석)</span>
           </h2>
           {selectedModel && (
             <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
@@ -157,21 +157,33 @@ export const Step2ModelComparison: React.FC<Step2ModelComparisonProps> = ({
                     {item.name}
                   </h3>
 
-                  {/* Target & Problem */}
-                  <div className="bg-slate-50 rounded-xl p-3 text-xs space-y-1.5 text-slate-700 border border-slate-100">
-                    <div>
-                      <span className="font-bold text-slate-900">🎯 대상 고객: </span>
-                      {item.targetCustomer}
+                  {/* Provider vs Customer Separation Box */}
+                  <div className="bg-slate-50 rounded-xl p-3.5 text-xs space-y-2 text-slate-700 border border-slate-200">
+                    <div className="flex items-start gap-1.5 pb-2 border-b border-slate-200/60">
+                      <User className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-slate-900 block">👤 공급자(나)의 전문 경력:</span>
+                        <span className="text-slate-600">{item.providerProfile?.careerSummary || '입력 전문 경력'}</span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="font-bold text-slate-900">💡 해결 문제: </span>
-                      {item.problemSolved}
+
+                    <div className="flex items-start gap-1.5 pb-1">
+                      <Target className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-blue-900 block">🎯 실제 결제 고객 (구매 주체):</span>
+                        <span className="text-slate-800 font-medium">{item.targetCustomer}</span>
+                      </div>
+                    </div>
+
+                    <div className="pl-5 text-[11px] text-slate-600">
+                      <span className="font-semibold text-slate-800">💡 고객의 통증: </span>
+                      {item.customerProblem || item.problemSolved}
                     </div>
                   </div>
 
                   {/* Why it fits */}
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    <strong className="text-slate-800">이유: </strong>
+                    <strong className="text-slate-800">경력 연결 이유: </strong>
                     {item.matchReason}
                   </p>
 
