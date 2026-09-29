@@ -70,10 +70,16 @@ export default function Home() {
         </Card>
         {h.chat && (
           <Card title="단톡방">
-            <Row k="링크" v={<a href={h.chat.url} target="_blank" rel="noreferrer" className="break-all underline">{h.chat.url || "(준비 중)"}</a>} />
-            <Row k="비밀번호" v={h.chat.password || "-"} />
-            <p className="mt-1 text-sm text-ink/70">인증 사진은 단톡방에 올려 주세요.</p>
-            {h.chat.password && <Button variant="line" className="mt-2" onClick={() => copyText(h.chat!.password)}>비밀번호 복사</Button>}
+            {h.chat.url
+              ? <a href={h.chat.url} target="_blank" rel="noreferrer" className="flex min-h-12 items-center justify-center rounded-2xl bg-ink px-5 font-bold text-paper">오픈채팅 입장하기</a>
+              : <p className="text-sm text-ink/70">단톡방 링크를 준비하고 있어요.</p>}
+            {h.chat.password && (
+              <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl bg-ink/[0.05] px-4 py-3">
+                <div className="min-w-0"><p className="text-xs font-semibold text-ink/70">입장 비밀번호</p><p className="truncate text-lg font-extrabold tabular-nums">{h.chat.password}</p></div>
+                <Button variant="line" className="min-h-11 shrink-0 px-4" onClick={() => copyText(h.chat!.password)}>복사</Button>
+              </div>
+            )}
+            <p className="mt-3 text-sm text-ink/70">인증 사진은 단톡방에 올려 주세요.</p>
           </Card>
         )}
         {inCohort && d >= 25 && (

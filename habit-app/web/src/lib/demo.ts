@@ -13,7 +13,7 @@ export const PERSONAS = { u1: "참가자(40기 진행 중)", new1: "신규 가�
 export type PersonaId = keyof typeof PERSONAS;
 
 const state = {
-  me: null as PersonaId | null,
+  me: "u1" as PersonaId | null, // 데모는 로그인 없이 참가자 화면으로 바로 시작
   day: 12, // 40기 N일차
   listeners: [] as ((e: string, s: any) => void)[],
   db: {} as Record<string, Row[]>,

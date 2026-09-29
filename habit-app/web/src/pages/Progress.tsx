@@ -23,22 +23,21 @@ export default function Progress() {
     const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     return { i, iso, day: d.getDate(), on: done.has(iso), past: (h.day_no ?? 0) > i, today: (h.day_no ?? 0) === i + 1 };
   });
-  const pct = (n: number) => `${(n / 28) * 100}%`;
+  const rate = Math.round(Math.min(p.count / p.success_min, 1) * 100), partialPct = Math.round((p.partial_min / p.success_min) * 100);
   return (
     <div className="space-y-3">
       <Card title={`${h.cohort_no}기 진행 현황`}>
-        <p className="text-5xl font-extrabold tracking-tight tabular-nums">{p.count}<span className="text-lg font-semibold"> / 28일 인증</span></p>
-        <p className="mt-1 text-sm text-ink/70">{p.remaining_to_goal > 0 ? `성공까지 ${p.remaining_to_goal}회 남았어요 (목표 ${p.success_min}회)` : `목표 ${p.success_min}회 달성! 계속 쌓아 보세요`}</p>
-        <div className="relative mt-6 h-3 rounded-full bg-gold-light" aria-hidden>
-          <div className="h-3 rounded-full bg-gold" style={{ width: pct(Math.min(p.count, 28)) }} />
-          {/* 두 기준선이 가까워 라벨이 겹치지 않게 18회는 선 왼쪽, 20회는 선 오른쪽에 붙인다 */}
-          {[[p.partial_min, "right-1"], [p.success_min, "left-1"]].map(([n, side]) => (
-            <div key={n as number} className="absolute -top-2 h-7 border-l-2 border-ink" style={{ left: pct(n as number) }}>
-              <span className={`absolute -top-5 whitespace-nowrap text-xs font-semibold ${side}`}>{n}회</span>
+        <p className="text-5xl font-extrabold tracking-tight tabular-nums">{rate}<span className="text-2xl font-bold">%</span></p>
+        <p className="mt-1 text-sm text-ink/70">{p.count}회 인증 · {p.remaining_to_goal > 0 ? `성공까지 ${p.remaining_to_goal}회 남았어요` : "목표 달성! 계속 쌓아 보세요"}</p>
+        <div className="relative mb-9 mt-9 h-3 rounded-full bg-gold-light" aria-hidden>
+          <div className="h-3 rounded-full bg-gold" style={{ width: `${rate}%` }} />
+          {/* 기준선: 부분환급(약 90%) / 성공(100%). 라벨이 겹치지 않게 100%는 선 왼쪽으로 붙인다 */}
+          {[[partialPct, "부분환급", "below"], [100, "성공", "above"]].map(([n, label, where]) => (
+            <div key={n as number} className="absolute -top-2 h-7 border-l-2 border-ink" style={{ left: `${n}%`, marginLeft: n === 100 ? -2 : 0 }}>
+              <span className={`absolute right-1.5 whitespace-nowrap text-xs font-bold ${where === "above" ? "-top-6" : "top-8"}`}>{n}% <span className="font-normal text-ink/70">{label}</span></span>
             </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-ink/70">{p.partial_min}회 이상 부분환급 기준 · {p.success_min}회 이상 성공</p>
       </Card>
       <Card title="인증 달력">
         <div className="grid grid-cols-7 gap-1 text-center text-xs text-ink/70 mb-1">{["월", "화", "수", "목", "금", "토", "일"].map((x) => <span key={x}>{x}</span>)}</div>

@@ -65,7 +65,7 @@ export default function Login() {
           {err && <Notice tone="error">{err}</Notice>}
           <Button type="submit" block disabled={busy} className="h-14 text-base">{busy ? "처리 중…" : mode === "login" ? "로그인" : "가입하고 시작하기"}</Button>
         </form>
-        {DEMO && <p className="mt-4 rounded-2xl bg-gold-light px-4 py-3 text-sm">체험 데모예요. 아무 이메일·비밀번호나 입력해 로그인하세요. 이메일에 <b>admin</b>이 들어가면 관리자, <b>new</b>가 들어가면 신규 가입자로 시작해요.</p>}
+        {DEMO && <p className="mt-4 rounded-2xl bg-gold-light px-4 py-3 text-sm">체험 데모예요. 위 바에서 사용자를 고르면 로그인 없이 바로 볼 수 있어요.</p>}
         <p className="mt-6 text-center text-sm text-ink/70"><Link to="/terms" className="underline">참여 규정</Link> · <Link to="/privacy" className="underline">개인정보 처리방침</Link></p>
       </div>
     </div>
