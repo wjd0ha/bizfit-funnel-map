@@ -4,6 +4,7 @@ import { supabase, SUPABASE_URL, SUPABASE_KEY } from "../lib/supabase";
 import { Button, Field, Notice } from "../components/ui";
 import Logo, { Wordmark } from "../components/Logo";
 import InAppBanner from "../components/InAppBanner";
+import { DEMO } from "../lib/demo";
 
 // S1: 로그인/가입. autocomplete 속성으로 기기의 비밀번호 관리자(지문/얼굴)가 채우게 한다.
 export default function Login() {
@@ -21,7 +22,7 @@ export default function Login() {
   const submit = async (e: FormEvent) => {
     e.preventDefault(); setErr(""); setBusy(true);
     try {
-      if (mode === "signup") {
+      if (mode === "signup" && !DEMO) {
         if (!agree) throw new Error("개인정보 수집·이용에 동의해 주세요");
         const r = await fetch(`${SUPABASE_URL}/functions/v1/signup`, {
           method: "POST",
@@ -64,6 +65,7 @@ export default function Login() {
           {err && <Notice tone="error">{err}</Notice>}
           <Button type="submit" block disabled={busy} className="h-14 text-base">{busy ? "처리 중…" : mode === "login" ? "로그인" : "가입하고 시작하기"}</Button>
         </form>
+        {DEMO && <p className="mt-4 rounded-2xl bg-gold-light px-4 py-3 text-sm">체험 데모예요. 아무 이메일·비밀번호나 입력해 로그인하세요. 이메일에 <b>admin</b>이 들어가면 관리자, <b>new</b>가 들어가면 신규 가입자로 시작해요.</p>}
         <p className="mt-6 text-center text-sm text-ink/70"><Link to="/terms" className="underline">참여 규정</Link> · <Link to="/privacy" className="underline">개인정보 처리방침</Link></p>
       </div>
     </div>

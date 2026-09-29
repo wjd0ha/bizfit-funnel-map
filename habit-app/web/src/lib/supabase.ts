@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { DEMO, demoClient } from "./demo";
 
 const url = import.meta.env.VITE_SUPABASE_URL as string;
 const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
@@ -7,9 +8,10 @@ export const SUPABASE_URL = url;
 export const SUPABASE_KEY = key;
 
 // 세션을 localStorage 에 저장하고 자동 갱신 → 재로그인 빈도를 줄인다.
-export const supabase = createClient(url, key, {
+const real = DEMO ? null : createClient(url, key, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: "bhic-auth" },
 });
+export const supabase = (DEMO ? demoClient : real) as NonNullable<typeof real>;
 
 export type RpcResult = { ok: boolean; code?: string; message?: string; [k: string]: unknown };
 

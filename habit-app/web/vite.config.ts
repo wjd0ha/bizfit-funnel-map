@@ -3,13 +3,17 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+const demo = process.env.VITE_DEMO === "1";
+
 export default defineConfig({
+  base: demo ? "./" : "/",
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
+      disable: demo,
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg"],
+      includeAssets: ["brand/logo-mark.png"],
       manifest: {
         name: "부행일치",
         short_name: "부행일치",

@@ -9,6 +9,7 @@ import PayBox from "../components/PayBox";
 import { fmtDate, fmtKst } from "../lib/format";
 import { useInfo } from "./Legal";
 import { useAuth } from "../lib/auth";
+import { motivation } from "../lib/motivation";
 
 export default function Home() {
   const { profile } = useAuth();
@@ -19,7 +20,7 @@ export default function Home() {
   });
   useInterval(() => { home.reload(); }, 60_000); // 인증 가능 시간 경계를 넘으면 서버 값으로 갱신
   const info = useInfo();
-  const [busy, setBusy] = useState(false); const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState(false); const [msg, setMsg] = useState(""); const [done, setDone] = useState("");
   const h = home.data;
 
   if (home.loading || mem.loading) return <Spinner />;
@@ -34,6 +35,7 @@ export default function Home() {
     try {
       const r = await rpc<RpcResult>("check_in");
       if (!r.ok && r.code !== "already_checked") setMsg(r.message ?? "인증하지 못했습니다");
+      else if (r.ok) setDone(`${r.count}번째 인증 완료! 오늘도 해냈어요`);
       await home.reload();
     } catch (e) { setMsg((e as Error).message); } finally { setBusy(false); }
   };
@@ -41,15 +43,15 @@ export default function Home() {
   const inCohort = h.phase === "in_cohort";
   const label = h.checked_today ? "오늘 인증 완료" : h.can_checkin ? "습관 인증 완료" : inCohort ? `인증 가능 시간 ${info.data?.checkin_start ?? "07:00"}~${info.data?.checkin_end ?? "23:59"}` : `시작일 ${fmtDate(h.start_date)}`;
   const d = h.day_no ?? 0;
+  const mo = motivation(h);
 
   return (
     <>
       <div className="mb-5">
-        <p className="text-sm font-semibold text-ink/70">{inCohort ? `${h.cohort_no}기 · ${d}일차 · 남은 ${h.days_left}일` : `${h.cohort_no}기 시작 ${fmtDate(h.start_date)}`}</p>
-        <h1 className="mt-1 text-[28px] font-extrabold leading-tight tracking-tight">
-          {h.checked_today ? <>오늘 약속,<br />지켰어요</> : <>{profile?.nickname ?? "참가자"}님,<br />오늘도 한 번이면 충분해요</>}
-        </h1>
-        <p className="mt-2 inline-block rounded-full bg-gold-light px-3 py-1 text-sm font-semibold">28일 중 8일은 쉬어도 됩니다</p>
+        <p className="text-sm font-semibold text-ink/70">{profile?.nickname ?? "참가자"}님 · {inCohort ? `${h.cohort_no}기 ${d}일차 · 남은 ${h.days_left}일` : `${h.cohort_no}기 시작 ${fmtDate(h.start_date)}`}</p>
+        <h1 className="mt-1 text-[28px] font-extrabold leading-tight tracking-tight">{h.checked_today ? "오늘 약속, 지켰어요" : mo.head}</h1>
+        <p className="mt-1.5 text-[15px] text-ink/70">{h.checked_today ? mo.head : mo.sub}</p>
+        <p className="mt-3 inline-block rounded-full bg-gold-light px-3 py-1 text-sm font-semibold">28일 중 8일은 쉬어도 됩니다</p>
       </div>
       <Gauge percent={h.percent ?? 0} count={h.count ?? 0} goal={h.goal ?? 20} />
       <div className="mt-6 space-y-3">
@@ -78,6 +80,7 @@ export default function Home() {
           <Card title="정산 신청 기간이에요"><p className="mb-2 text-sm">연장을 원하지 않으면 28일차 23:59까지 중단 신청을 해 주세요. 신청하지 않으면 자동 연장돼요.</p>
             <Link to="/stop" className="inline-flex min-h-11 items-center underline">중단 신청 / 환급계좌 입력</Link></Card>
         )}
+        {done && h.checked_today && <Notice tone="warn">{done}</Notice>}
         {msg && <Notice tone="error">{msg}</Notice>}
       </div>
 

@@ -1,4 +1,7 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, HashRouter, Navigate, Route, Routes } from "react-router-dom";
+import { DEMO } from "./lib/demo";
+import DemoBar from "./components/DemoBar";
 import { AuthProvider, useAuth } from "./lib/auth";
 import MemberLayout from "./components/MemberLayout";
 import AdminLayout from "./components/AdminLayout";
@@ -28,10 +31,13 @@ function Gate({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const [tick, setTick] = useState(0);
+  const Router = DEMO ? HashRouter : BrowserRouter;
   return (
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
-        <Routes>
+        {DEMO && <DemoBar onChange={() => setTick((t) => t + 1)} />}
+        <Routes key={tick}>
           {/* S11: 로그인 없이 열람 */}
           <Route path="/terms" element={<Legal kind="terms" />} />
           <Route path="/privacy" element={<Legal kind="privacy" />} />
@@ -57,6 +63,6 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   );
 }
