@@ -10,5 +10,6 @@ run() { $P "psql -X -q -v ON_ERROR_STOP=1 habit_test -f $(pwd)/$1"; }
 run shim.sql
 run ../migrations/0001_schema.sql
 run ../migrations/0002_rpc.sql
+run ../migrations/0003_admin_extras.sql
 run clock.sql
 run tests.sql

@@ -229,6 +229,27 @@ select t_ok('anon: get_public_info 허용', get_public_info() ? 'operator_name')
 select t_ok('anon: 인증 RPC 차단', t_raises('select check_in()'));
 reset role;
 
+
+-- ───────── 3단계 추가 기능 ─────────
+select t_as(:'admin');
+select t_ok('자동 정산 기본 꺼짐', finalize_due_cohorts() = 0);
+select t_ok('관리자 참가자 목록', jsonb_array_length(admin_participants(40)) > 5);
+select t_ok('관리자 카운트', (admin_counts()->>'members')::int > 5);
+-- 시작 전 취소(전액 환불) / 시작 후 차단
+select t_now('2026-11-10 09:00+09');
+select t_user('early') as early \gset
+select t_as(:'admin'); select admin_set_recruiting(43, true, '2027-01-03 23:59+09');
+select t_as(:'early'); select apply(43,'얼리',true);
+select t_as(:'admin'); select id as paye from payments where user_id = :'early' \gset
+select admin_confirm_payment(:paye);
+select t_ok('시작 전 취소: 환불액 3만원', (admin_cancel_application(:'early',43)->>'refund_amount')::int = 30000);
+select t_ok('취소 후 잔액 0/종료', (select status = 'ended' and deposit_balance = 0 from memberships where user_id = :'early'));
+select t_ok('시작 후 취소 차단', t_code(admin_cancel_application(:'u1',40)) = 'already_started');
+-- 허위 인증 성공 취소: 정산 전에만
+select t_ok('정산 후 성공 취소 표시 차단', t_code(admin_set_revoked(:'u1',40,true)) = 'finalized');
+select t_as(:'n20');
+select t_ok('일반 사용자 revoked 차단', t_raises($$select admin_set_revoked(gen_random_uuid(),40,true)$$));
+
 -- 결과
 select count(*) filter (where not ok) as failed, count(*) as total from t_res \gset
 \echo ===== :total 건 중 실패 :failed 건 =====
