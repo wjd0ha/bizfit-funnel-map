@@ -36,15 +36,15 @@ export default function Payments() {
         ))}
       </div>
       {msg && <Notice tone="error">{msg}</Notice>}
-      {list.loading ? <Spinner /> : (list.data ?? []).length === 0 ? <Card><p className="text-sm text-ink/60">해당하는 입금 내역이 없어요.</p></Card> : (
+      {list.loading ? <Spinner /> : (list.data ?? []).length === 0 ? <Card><p className="text-sm text-ink/70">해당하는 입금 내역이 없어요.</p></Card> : (
         <div className="space-y-2">
           {list.data!.map((p) => (
             <Card key={p.id}>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <b>{p.profiles?.name}</b> <span className="text-sm text-ink/60">({p.profiles?.nickname})</span><br />
+                  <b>{p.profiles?.name}</b> <span className="text-sm text-ink/70">({p.profiles?.nickname})</span><br />
                   <span className="text-sm">입금자명 <b>{p.depositor_name ?? "-"}</b> · {p.cohort_no}기 · {KIND_LABEL[p.kind]}</span><br />
-                  <span className="text-sm text-ink/60">{PAY_STATUS[p.status]} · {fmtKst(p.created_at)}</span>
+                  <span className="text-sm text-ink/70">{PAY_STATUS[p.status]} · {fmtKst(p.created_at)}</span>
                 </div>
                 <div className="text-right"><p className="text-lg font-bold tabular-nums">{won(p.amount)}</p>
                   {(p.status === "claimed" || p.status === "awaiting") && (

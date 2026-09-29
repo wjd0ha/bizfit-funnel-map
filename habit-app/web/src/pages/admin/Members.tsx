@@ -51,7 +51,7 @@ export default function Members() {
           ...rows.map((r) => [r.name, r.nickname, r.phone, r.email, MEMBER_STATUS[r.membership_status], PART_STATUS[r.participation_status], r.checkin_count, RESULT_LABEL[r.result], r.deposit_balance, r.fee_paid ? "Y" : "N"])])}>CSV</Button>
       </div>
       {msg && <Notice>{msg}</Notice>}
-      <p className="text-sm text-ink/60">{rows.length}명</p>
+      <p className="text-sm text-ink/70">{rows.length}명</p>
       {list.loading ? <Spinner /> : (
         <div className="overflow-x-auto rounded-xl border border-ink/10 bg-white">
           <table className="w-full min-w-[760px] text-left text-sm">
@@ -59,7 +59,7 @@ export default function Members() {
             <tbody className="divide-y divide-ink/10">
               {rows.map((r) => (
                 <tr key={r.user_id}>
-                  <td className="px-3 py-2"><b>{r.name}</b> ({r.nickname})<br /><span className="text-ink/60">{r.email}</span></td>
+                  <td className="px-3 py-2"><b>{r.name}</b> ({r.nickname})<br /><span className="text-ink/70">{r.email}</span></td>
                   <td className="px-3 py-2">{r.phone}</td>
                   <td className="px-3 py-2">{PART_STATUS[r.participation_status]}{r.stop_requested && " · 중단신청"}</td>
                   <td className="px-3 py-2 tabular-nums">{r.checkin_count}</td>

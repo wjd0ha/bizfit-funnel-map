@@ -4,7 +4,7 @@ import InAppBanner from "./InAppBanner";
 import { useAuth } from "../lib/auth";
 
 const tab = ({ isActive }: { isActive: boolean }) =>
-  `min-h-11 flex-1 inline-flex items-center justify-center border-b-2 text-sm font-semibold ${isActive ? "border-gold text-ink" : "border-transparent text-ink/60"}`;
+  `min-h-11 flex-1 inline-flex items-center justify-center border-b-2 text-sm font-semibold ${isActive ? "border-gold text-ink" : "border-transparent text-ink/70"}`;
 
 export default function MemberLayout() {
   const { isAdmin } = useAuth();

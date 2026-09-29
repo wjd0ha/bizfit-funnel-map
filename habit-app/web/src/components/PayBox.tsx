@@ -28,7 +28,7 @@ export default function PayBox({ kind, title, onChanged }: { kind: "initial" | "
   return (
     <Card title={title}>
       <Row k="입금 금액" v={won(p.amount)} />
-      <Row k="입금 계좌" v={<>{b.bank_name} {b.bank_account}<br /><span className="font-normal text-ink/60">예금주 {b.bank_holder}</span></>} />
+      <Row k="입금 계좌" v={<>{b.bank_name} {b.bank_account}<br /><span className="font-normal text-ink/70">예금주 {b.bank_holder}</span></>} />
       <Row k="상태" v={PAY_STATUS[p.status]} />
       {b.bank_account && <Button variant="line" className="mt-2" onClick={() => copyText(b.bank_account)}>계좌번호 복사</Button>}
       {(p.status === "awaiting" || p.status === "rejected") && (

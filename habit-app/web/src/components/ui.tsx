@@ -11,7 +11,7 @@ export function Button({ variant = "primary", block, className, ...p }:
       className={cx(
         "min-h-11 px-4 rounded-lg font-semibold transition-colors disabled:cursor-not-allowed",
         block && "w-full",
-        variant === "primary" && "bg-gold text-ink hover:bg-[#a67a24] disabled:bg-mute disabled:text-ink/60",
+        variant === "primary" && "bg-gold text-ink hover:bg-[#a67a24] disabled:bg-mute disabled:text-ink/70",
         variant === "line" && "border border-ink/25 text-ink bg-transparent hover:bg-gold-light disabled:text-ink/40",
         variant === "plain" && "text-ink underline underline-offset-2 disabled:text-ink/40",
         variant === "danger" && "border border-ink text-ink hover:bg-ink hover:text-paper disabled:opacity-40",
@@ -35,7 +35,7 @@ export function Field({ label, hint, ...p }: InputHTMLAttributes<HTMLInputElemen
     <label className="block">
       <span className="mb-1 block text-sm font-semibold">{label}</span>
       <input {...p} className={cx("min-h-11 w-full rounded-lg border border-ink/25 bg-white px-3 text-base", p.className)} />
-      {hint && <span className="mt-1 block text-sm text-ink/60">{hint}</span>}
+      {hint && <span className="mt-1 block text-sm text-ink/70">{hint}</span>}
     </label>
   );
 }
@@ -49,10 +49,10 @@ export function Notice({ children, tone = "info" }: { children: ReactNode; tone?
   );
 }
 
-export const Spinner = () => <p className="py-10 text-center text-ink/60">불러오는 중…</p>;
-export const Muted = ({ children, className }: { children: ReactNode; className?: string }) => <p className={cx("text-sm text-ink/60", className)}>{children}</p>;
+export const Spinner = () => <p className="py-10 text-center text-ink/70">불러오는 중…</p>;
+export const Muted = ({ children, className }: { children: ReactNode; className?: string }) => <p className={cx("text-sm text-ink/70", className)}>{children}</p>;
 export const Row = ({ k, v }: { k: string; v: ReactNode }) => (
-  <div className="flex items-start justify-between gap-3 py-1"><span className="text-ink/60">{k}</span><span className="text-right font-semibold">{v}</span></div>
+  <div className="flex items-start justify-between gap-3 py-1"><span className="text-ink/70">{k}</span><span className="text-right font-semibold">{v}</span></div>
 );
 
 export async function copyText(t: string) {

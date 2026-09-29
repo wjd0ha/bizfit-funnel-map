@@ -42,7 +42,7 @@ export default function Settle() {
         <Button className="ml-auto" disabled={busy || finalized} onClick={finalize}>{finalized ? "정산 완료됨" : "정산 확정 실행"}</Button></div>
       {msg && <Notice tone={msg.t === "error" ? "error" : "info"}>{msg.s}</Notice>}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {(["success", "partial", "fail", "pending"] as const).map((k) => <Card key={k}><p className="text-sm text-ink/60">{RESULT_LABEL[k]}</p><p className="text-2xl font-bold tabular-nums">{by(k).length}</p></Card>)}
+        {(["success", "partial", "fail", "pending"] as const).map((k) => <Card key={k}><p className="text-sm text-ink/70">{RESULT_LABEL[k]}</p><p className="text-2xl font-bold tabular-nums">{by(k).length}</p></Card>)}
       </div>
       {!finalized && <Notice>정산 전에는 &lsquo;성공 취소&rsquo;로 허위 인증자를 미달 처리할 수 있어요. 정산 후에는 바꿀 수 없어요.</Notice>}
       <Card title="참가자별 결과">
@@ -59,7 +59,7 @@ export default function Settle() {
         <Button variant="line" className="mt-2" onClick={() => downloadCsv(`정산_${pick.no}기.csv`, [["성명", "닉네임", "인증횟수", "결과", "보증금잔액"], ...rows.map((r) => [r.name, r.nickname, r.checkin_count, RESULT_LABEL[r.result], r.deposit_balance])])}>CSV</Button>
       </Card>
       <Card title="재납부 대상 (다음 기수)">
-        {topups.length === 0 ? <p className="text-sm text-ink/60">없어요.</p> : (
+        {topups.length === 0 ? <p className="text-sm text-ink/70">없어요.</p> : (
           <ul className="divide-y divide-ink/10 text-sm">{topups.map((r) => <li key={r.user_id} className="flex justify-between py-2"><span>{r.name} ({RESULT_LABEL[r.result]})</span><b>{won(r.topup_amount!)}</b></li>)}</ul>
         )}
       </Card>

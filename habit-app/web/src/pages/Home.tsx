@@ -58,14 +58,14 @@ export default function Home() {
           {h.habits && h.habits.length > 0
             ? <ul className="space-y-1">{h.habits.map((x, i) => <li key={i} className="flex gap-2"><span className="text-gold">●</span>{x}</li>)}</ul>
             : <Muted>아직 습관이 없어요.</Muted>}
-          <p className="mt-2 text-sm text-ink/60">이 중 하나만 실천해도 오늘은 인정돼요.</p>
+          <p className="mt-2 text-sm text-ink/70">이 중 하나만 실천해도 오늘은 인정돼요.</p>
           <Link to="/habits" className="mt-2 inline-flex min-h-11 items-center text-sm underline">습관 {h.habits?.length ? "수정" : "설정"}하기</Link>
         </Card>
         {h.chat && (
           <Card title="단톡방">
             <Row k="링크" v={<a href={h.chat.url} target="_blank" rel="noreferrer" className="break-all underline">{h.chat.url || "(준비 중)"}</a>} />
             <Row k="비밀번호" v={h.chat.password || "-"} />
-            <p className="mt-1 text-sm text-ink/60">인증 사진은 단톡방에 올려 주세요.</p>
+            <p className="mt-1 text-sm text-ink/70">인증 사진은 단톡방에 올려 주세요.</p>
             {h.chat.password && <Button variant="line" className="mt-2" onClick={() => copyText(h.chat!.password)}>비밀번호 복사</Button>}
           </Card>
         )}

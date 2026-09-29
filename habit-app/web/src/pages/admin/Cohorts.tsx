@@ -50,7 +50,7 @@ export default function Cohorts() {
           onClick={() => act("admin_create_cohort", { p_no: Number(f.no), p_start: f.start, p_end: addDays(f.start, 27), p_apply_deadline: fromKstInput(f.deadline) }, "기수를 만들었어요")}>기수 생성</Button>
       </Card>
       <Card title="기수 목록">
-        {(list.data ?? []).length === 0 ? <p className="text-sm text-ink/60">기수가 없어요. 위에서 첫 기수를 만드세요.</p> : (
+        {(list.data ?? []).length === 0 ? <p className="text-sm text-ink/70">기수가 없어요. 위에서 첫 기수를 만드세요.</p> : (
           <div className="divide-y divide-ink/10">
             {list.data!.map((c) => <CohortRow key={c.no} c={c} act={act} />)}
           </div>

@@ -48,7 +48,7 @@ export default function My() {
           <ul className="mt-2 divide-y divide-ink/10 text-sm">
             {l.map((x) => (
               <li key={x.id} className="flex justify-between py-2">
-                <span>{REASON[x.reason]}{x.cohort_no ? ` (${x.cohort_no}기)` : ""}<br /><span className="text-ink/60">{fmtKst(x.created_at)}</span></span>
+                <span>{REASON[x.reason]}{x.cohort_no ? ` (${x.cohort_no}기)` : ""}<br /><span className="text-ink/70">{fmtKst(x.created_at)}</span></span>
                 <b className="tabular-nums">{x.delta > 0 ? "+" : ""}{x.delta.toLocaleString()}</b>
               </li>
             ))}
@@ -60,7 +60,7 @@ export default function My() {
           <ul className="divide-y divide-ink/10 text-sm">
             {p.map((x) => (
               <li key={x.id} className="flex justify-between py-2">
-                <span>{KIND_LABEL[x.kind]} · {x.cohort_no}기<br /><span className="text-ink/60">{PAY_STATUS[x.status]} · {fmtKst(x.created_at)}</span></span>
+                <span>{KIND_LABEL[x.kind]} · {x.cohort_no}기<br /><span className="text-ink/70">{PAY_STATUS[x.status]} · {fmtKst(x.created_at)}</span></span>
                 <b className="tabular-nums">{won(x.amount)}</b>
               </li>
             ))}

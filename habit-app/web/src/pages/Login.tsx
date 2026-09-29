@@ -40,7 +40,7 @@ export default function Login() {
       <InAppBanner />
       <div className="mx-auto max-w-md px-4 py-10">
         <div className="mb-6 flex flex-col items-center gap-2"><Logo size={72} /><h1 className="text-2xl font-bold">부행일치</h1>
-          <p className="text-sm text-ink/60">부자로 가는 행동 일치</p></div>
+          <p className="text-sm text-ink/70">부자로 가는 행동 일치</p></div>
         <div className="mb-4 flex rounded-lg border border-ink/15 p-1">
           {(["login", "signup"] as const).map((m) => (
             <button key={m} type="button" onClick={() => { setMode(m); setErr(""); }}
@@ -64,7 +64,7 @@ export default function Login() {
           {err && <Notice tone="error">{err}</Notice>}
           <Button type="submit" block disabled={busy} className="h-12">{busy ? "처리 중…" : mode === "login" ? "로그인" : "가입하고 시작하기"}</Button>
         </form>
-        <p className="mt-6 text-center text-sm text-ink/60"><Link to="/terms" className="underline">참여 규정</Link> · <Link to="/privacy" className="underline">개인정보 처리방침</Link></p>
+        <p className="mt-6 text-center text-sm text-ink/70"><Link to="/terms" className="underline">참여 규정</Link> · <Link to="/privacy" className="underline">개인정보 처리방침</Link></p>
       </div>
     </div>
   );

@@ -63,7 +63,7 @@ export default function Apply() {
       </Card>
       {msg && <Notice tone="error">{msg}</Notice>}
       <Button block className="h-12" disabled={busy || !agree || !name.trim()} onClick={submit}>{busy ? "처리 중…" : "신청하기"}</Button>
-      <p className="text-center text-sm text-ink/60">신청 후 입금하고 &lsquo;입금했어요&rsquo;를 눌러 주세요.</p>
+      <p className="text-center text-sm text-ink/70">신청 후 입금하고 &lsquo;입금했어요&rsquo;를 눌러 주세요.</p>
     </div>
   );
 }

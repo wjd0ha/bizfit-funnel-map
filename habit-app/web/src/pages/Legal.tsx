@@ -52,7 +52,7 @@ export default function Legal({ kind }: { kind: "terms" | "privacy" }) {
     <div className="mx-auto max-w-md px-4 py-6">
       <Link to="/" className="text-sm underline">← 돌아가기</Link>
       <h1 className="mb-1 mt-3 text-xl font-bold">{kind === "terms" ? "부행일치 참여 규정" : "개인정보 처리방침"}</h1>
-      <p className="mb-4 text-sm text-ink/60">버전 {kind === "terms" ? i.terms_version : i.privacy_version}</p>
+      <p className="mb-4 text-sm text-ink/70">버전 {kind === "terms" ? i.terms_version : i.privacy_version}</p>
       {kind === "terms" ? <RulesText i={i} /> : (
         <div className="space-y-5 text-sm">
           <section><h2 className="mb-1 font-bold">1. 개인정보 수집·이용</h2><PrivacyConsentText /></section>
@@ -65,7 +65,7 @@ export default function Legal({ kind }: { kind: "terms" | "privacy" }) {
           <section><h2 className="mb-1 font-bold">5. 시행일과 버전</h2><p>버전 {i.privacy_version}. 동의 시 버전과 시각이 기록됩니다.</p></section>
         </div>
       )}
-      <p className="mt-6 text-sm text-ink/60">{pathname === "/terms" ? <Link to="/privacy" className="underline">개인정보 처리방침 보기</Link> : <Link to="/terms" className="underline">참여 규정 보기</Link>}</p>
+      <p className="mt-6 text-sm text-ink/70">{pathname === "/terms" ? <Link to="/privacy" className="underline">개인정보 처리방침 보기</Link> : <Link to="/terms" className="underline">참여 규정 보기</Link>}</p>
     </div>
   );
 }

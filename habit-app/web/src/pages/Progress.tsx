@@ -31,18 +31,21 @@ export default function Progress() {
         <p className="mt-1 text-sm text-ink/70">{p.remaining_to_goal > 0 ? `성공까지 ${p.remaining_to_goal}회 남았어요 (목표 ${p.success_min}회)` : `목표 ${p.success_min}회 달성! 계속 쌓아 보세요`}</p>
         <div className="relative mt-6 h-3 rounded-full bg-gold-light" aria-hidden>
           <div className="h-3 rounded-full bg-gold" style={{ width: pct(Math.min(p.count, 28)) }} />
-          {[p.partial_min, p.success_min].map((n) => (
-            <div key={n} className="absolute -top-2 h-7 border-l-2 border-ink" style={{ left: pct(n) }}><span className="absolute -top-4 -translate-x-1/2 text-xs font-semibold">{n}회</span></div>
+          {/* 두 기준선이 가까워 라벨이 겹치지 않게 18회는 선 왼쪽, 20회는 선 오른쪽에 붙인다 */}
+          {[[p.partial_min, "right-1"], [p.success_min, "left-1"]].map(([n, side]) => (
+            <div key={n as number} className="absolute -top-2 h-7 border-l-2 border-ink" style={{ left: pct(n as number) }}>
+              <span className={`absolute -top-5 whitespace-nowrap text-xs font-semibold ${side}`}>{n}회</span>
+            </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-ink/60">{p.partial_min}회 이상 부분환급 기준 · {p.success_min}회 이상 성공</p>
+        <p className="mt-2 text-xs text-ink/70">{p.partial_min}회 이상 부분환급 기준 · {p.success_min}회 이상 성공</p>
       </Card>
       <Card title="인증 달력">
-        <div className="grid grid-cols-7 gap-1 text-center text-xs text-ink/60 mb-1">{["월", "화", "수", "목", "금", "토", "일"].map((x) => <span key={x}>{x}</span>)}</div>
+        <div className="grid grid-cols-7 gap-1 text-center text-xs text-ink/70 mb-1">{["월", "화", "수", "목", "금", "토", "일"].map((x) => <span key={x}>{x}</span>)}</div>
         <div className="grid grid-cols-7 gap-1">
           {cells.map((c) => (
             <div key={c.i} aria-label={`${c.iso} ${c.on ? "인증함" : "미인증"}`}
-              className={`flex aspect-square flex-col items-center justify-center rounded-lg text-xs ${c.on ? "bg-gold text-ink font-bold" : c.past ? "bg-mute/40 text-ink/60" : "border border-ink/10"} ${c.today ? "ring-2 ring-ink" : ""}`}>
+              className={`flex aspect-square flex-col items-center justify-center rounded-lg text-xs ${c.on ? "bg-gold text-ink font-bold" : c.past ? "bg-mute/40 text-ink/70" : "border border-ink/10"} ${c.today ? "ring-2 ring-ink" : ""}`}>
               <span>{c.day}</span>{c.on && <span aria-hidden>✓</span>}
             </div>
           ))}
