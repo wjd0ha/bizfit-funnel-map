@@ -27,7 +27,7 @@ export default function Progress() {
   return (
     <div className="space-y-3">
       <Card title={`${h.cohort_no}기 진행 현황`}>
-        <p className="text-3xl font-bold tabular-nums">{p.count}<span className="text-lg font-semibold"> / 28일 인증</span></p>
+        <p className="text-5xl font-extrabold tracking-tight tabular-nums">{p.count}<span className="text-lg font-semibold"> / 28일 인증</span></p>
         <p className="mt-1 text-sm text-ink/70">{p.remaining_to_goal > 0 ? `성공까지 ${p.remaining_to_goal}회 남았어요 (목표 ${p.success_min}회)` : `목표 ${p.success_min}회 달성! 계속 쌓아 보세요`}</p>
         <div className="relative mt-6 h-3 rounded-full bg-gold-light" aria-hidden>
           <div className="h-3 rounded-full bg-gold" style={{ width: pct(Math.min(p.count, 28)) }} />
@@ -45,7 +45,7 @@ export default function Progress() {
         <div className="grid grid-cols-7 gap-1">
           {cells.map((c) => (
             <div key={c.i} aria-label={`${c.iso} ${c.on ? "인증함" : "미인증"}`}
-              className={`flex aspect-square flex-col items-center justify-center rounded-lg text-xs ${c.on ? "bg-gold text-ink font-bold" : c.past ? "bg-mute/40 text-ink/70" : "border border-ink/10"} ${c.today ? "ring-2 ring-ink" : ""}`}>
+              className={`flex aspect-square flex-col items-center justify-center rounded-2xl text-xs ${c.on ? "bg-gold text-ink font-bold" : c.past ? "bg-ink/[0.06] text-ink/60" : "bg-white ring-1 ring-ink/10"} ${c.today ? "ring-2 !ring-ink" : ""}`}>
               <span>{c.day}</span>{c.on && <span aria-hidden>✓</span>}
             </div>
           ))}

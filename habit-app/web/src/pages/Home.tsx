@@ -8,8 +8,10 @@ import Gauge from "../components/Gauge";
 import PayBox from "../components/PayBox";
 import { fmtDate, fmtKst } from "../lib/format";
 import { useInfo } from "./Legal";
+import { useAuth } from "../lib/auth";
 
 export default function Home() {
+  const { profile } = useAuth();
   const home = useAsync(() => rpc<HomeT>("get_home"));
   const mem = useAsync(async () => {
     const { data } = await supabase.from("memberships").select("*").maybeSingle();
@@ -42,12 +44,15 @@ export default function Home() {
 
   return (
     <>
-      <p className="mb-3 rounded-lg bg-gold-light px-3 py-2 text-center text-sm font-semibold">28일 중 8일은 쉬어도 됩니다</p>
-      {inCohort
-        ? <p className="mb-2 text-center text-ink/70">{h.cohort_no}기 · {d}일차 · 남은 {h.days_left}일</p>
-        : <p className="mb-2 text-center text-ink/70">{h.cohort_no}기 시작 {fmtDate(h.start_date)}</p>}
+      <div className="mb-5">
+        <p className="text-sm font-semibold text-ink/70">{inCohort ? `${h.cohort_no}기 · ${d}일차 · 남은 ${h.days_left}일` : `${h.cohort_no}기 시작 ${fmtDate(h.start_date)}`}</p>
+        <h1 className="mt-1 text-[28px] font-extrabold leading-tight tracking-tight">
+          {h.checked_today ? <>오늘 약속,<br />지켰어요</> : <>{profile?.nickname ?? "참가자"}님,<br />오늘도 한 번이면 충분해요</>}
+        </h1>
+        <p className="mt-2 inline-block rounded-full bg-gold-light px-3 py-1 text-sm font-semibold">28일 중 8일은 쉬어도 됩니다</p>
+      </div>
       <Gauge percent={h.percent ?? 0} count={h.count ?? 0} goal={h.goal ?? 20} />
-      <div className="mt-5 space-y-3">
+      <div className="mt-6 space-y-3">
         {h.participation_status === "topup_pending" && (
           <>
             <Notice tone="warn">보증금 재납부가 필요해요. 기한: {fmtKst(h.topup_due_at)}까지 (미납 시 이번 기수 참여가 취소돼요)</Notice>
@@ -77,9 +82,9 @@ export default function Home() {
       </div>
 
       {/* 하단 고정 인증 버튼 (56px 이상, safe-area 적용) */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-ink/10 bg-paper px-4 pt-3" style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}>
+      <div className="fixed inset-x-0 bottom-0 bg-gradient-to-t from-paper via-paper to-paper/0 px-5 pt-6" style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}>
         <div className="mx-auto max-w-md">
-          <Button block className="h-14 text-lg" disabled={!h.can_checkin || busy} onClick={checkin}>{busy ? "처리 중…" : label}</Button>
+          <Button variant="gold" block className={`h-14 text-lg ${h.checked_today ? "!bg-ink !text-paper" : ""}`} disabled={(!h.can_checkin && !h.checked_today) || busy} onClick={h.checked_today ? undefined : checkin}>{busy ? "처리 중…" : h.checked_today ? <><span className="text-gold">✓</span> {label}</> : label}</Button>
         </div>
       </div>
     </>

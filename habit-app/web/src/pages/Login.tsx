@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { supabase, SUPABASE_URL, SUPABASE_KEY } from "../lib/supabase";
 import { Button, Field, Notice } from "../components/ui";
-import Logo from "../components/Logo";
+import Logo, { Wordmark } from "../components/Logo";
 import InAppBanner from "../components/InAppBanner";
 
 // S1: 로그인/가입. autocomplete 속성으로 기기의 비밀번호 관리자(지문/얼굴)가 채우게 한다.
@@ -38,13 +38,13 @@ export default function Login() {
   return (
     <div className="min-h-screen">
       <InAppBanner />
-      <div className="mx-auto max-w-md px-4 py-10">
-        <div className="mb-6 flex flex-col items-center gap-2"><Logo size={72} /><h1 className="text-2xl font-bold">부행일치</h1>
-          <p className="text-sm text-ink/70">부자로 가는 행동 일치</p></div>
-        <div className="mb-4 flex rounded-lg border border-ink/15 p-1">
+      <div className="mx-auto max-w-md px-5 py-12">
+        <div className="mb-8 flex flex-col items-center gap-3"><Logo size={84} /><h1><Wordmark size={34} /></h1>
+          <p className="text-[15px] text-ink/70">목표와 행동을 하루 한 번, 일치시켜요</p></div>
+        <div className="mb-5 flex gap-1 rounded-full bg-ink/[0.06] p-1">
           {(["login", "signup"] as const).map((m) => (
             <button key={m} type="button" onClick={() => { setMode(m); setErr(""); }}
-              className={`min-h-11 flex-1 rounded-md font-semibold ${mode === m ? "bg-gold text-ink" : "text-ink/70"}`}>{m === "login" ? "로그인" : "가입"}</button>
+              className={`min-h-11 flex-1 rounded-full font-semibold transition-colors ${mode === m ? "bg-white font-bold text-ink ring-1 ring-ink/10" : "text-ink/70"}`}>{m === "login" ? "로그인" : "가입"}</button>
           ))}
         </div>
         <form onSubmit={submit} className="space-y-3">
@@ -62,7 +62,7 @@ export default function Login() {
             </label>
           </>}
           {err && <Notice tone="error">{err}</Notice>}
-          <Button type="submit" block disabled={busy} className="h-12">{busy ? "처리 중…" : mode === "login" ? "로그인" : "가입하고 시작하기"}</Button>
+          <Button type="submit" block disabled={busy} className="h-14 text-base">{busy ? "처리 중…" : mode === "login" ? "로그인" : "가입하고 시작하기"}</Button>
         </form>
         <p className="mt-6 text-center text-sm text-ink/70"><Link to="/terms" className="underline">참여 규정</Link> · <Link to="/privacy" className="underline">개인정보 처리방침</Link></p>
       </div>
