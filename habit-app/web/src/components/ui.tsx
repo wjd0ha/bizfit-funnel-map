@@ -52,7 +52,7 @@ export function Notice({ children, tone = "info" }: { children: ReactNode; tone?
 export const Spinner = () => <p className="py-10 text-center text-ink/70">불러오는 중…</p>;
 export const Muted = ({ children, className }: { children: ReactNode; className?: string }) => <p className={cx("text-sm text-ink/70", className)}>{children}</p>;
 export const Row = ({ k, v }: { k: string; v: ReactNode }) => (
-  <div className="flex items-start justify-between gap-3 py-1"><span className="text-ink/70">{k}</span><span className="text-right font-semibold">{v}</span></div>
+  <div className="flex items-start justify-between gap-3 py-1"><span className="shrink-0 whitespace-nowrap text-ink/70">{k}</span><span className="min-w-0 text-right font-semibold [overflow-wrap:anywhere]">{v}</span></div>
 );
 
 export async function copyText(t: string) {
