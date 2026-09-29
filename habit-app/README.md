@@ -4,7 +4,7 @@
 
 ## 진행 상황 (설계서 13장)
 - [x] 1단계 DB: `supabase/migrations/0001_schema.sql`(테이블·RLS), `0002_rpc.sql`(RPC), `supabase/cron.sql`(pg_cron)
-- [x] 1단계 테스트: `supabase/tests/run.sh` (로컬 PostgreSQL 16, 109개 검증)
+- [x] 1단계 테스트: `supabase/tests/run.sh` (로컬 PostgreSQL 16, 108개 검증)
 - [ ] 2단계~ 프론트(Vite+React), 관리자 화면, Edge Function `export-sheet` 등
 
 ## 테스트 실행
